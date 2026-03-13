@@ -1,0 +1,7 @@
+[flake8]
+exclude =
+    .vevn,
+    .venv,
+    migrations,
+    staticfiles
+max-line-length = 120
