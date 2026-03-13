@@ -1,6 +1,4 @@
 #!/bin/bash
-# Push Docker image to DockerHub
-# Required env vars: BRANCH_NAME, DOCKER_USERNAME, DOCKER_PASSWORD
 set -e
 
 IMAGE_NAME="${DOCKER_USERNAME}/automatisation-web"

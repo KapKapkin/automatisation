@@ -1,12 +1,4 @@
 #!/bin/bash
-# CI/CD Deploy Script: Deploy application on stage server
-# Used by TeamCity build configuration
-#
-# Required environment variables:
-#   DOCKER_USERNAME - DockerHub username
-#   DOCKER_PASSWORD - DockerHub password/token
-#   BRANCH_NAME     - Git branch name (set by TeamCity)
-
 set -e
 
 IMAGE_NAME="${DOCKER_USERNAME}/automatisation-web"
@@ -23,13 +15,10 @@ fi
 
 echo "=== Deploying ${IMAGE_NAME}:${TAG} to stage ==="
 
-# Login to DockerHub
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
-# Pull the latest image
 docker pull "${IMAGE_NAME}:${TAG}"
 
-# Deploy using docker-compose.stage.yml
 export DOCKER_USERNAME="${DOCKER_USERNAME}"
 export DEPLOY_TAG="${TAG}"
 
@@ -39,7 +28,6 @@ docker compose -f docker-compose.stage.yml up -d
 echo "=== Waiting for application to start ==="
 sleep 10
 
-# Health check
 if docker compose -f docker-compose.stage.yml ps | grep -q "Up"; then
     echo "=== Deploy successful! Application is running ==="
     docker compose -f docker-compose.stage.yml ps
