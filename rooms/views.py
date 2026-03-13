@@ -66,12 +66,16 @@ class RoomListView(ListView):
         building_id = self.request.GET.get('building')
         if building_id:
             queryset = queryset.filter(building_id=building_id)
+        search = self.request.GET.get('search', '').strip()
+        if search:
+            queryset = queryset.filter(number__icontains=search)
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['buildings'] = Building.objects.all()
         context['selected_building'] = self.request.GET.get('building', '')
+        context['search_query'] = self.request.GET.get('search', '')
         return context
 
 

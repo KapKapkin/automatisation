@@ -24,9 +24,13 @@
                     {% endfor %}
                 </select>
             </div>
+            <div class="col-md-4">
+                <label for="search" class="form-label">Поиск по номеру</label>
+                <input type="text" name="search" id="search" class="form-control" placeholder="Введите номер комнаты" value="{{ search_query }}">
+            </div>
             <div class="col-md-2">
                 <button type="submit" class="btn btn-outline-primary">
-                    <i class="bi bi-filter"></i> Фильтр
+                    <i class="bi bi-search"></i> Найти
                 </button>
             </div>
         </form>

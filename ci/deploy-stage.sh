@@ -48,3 +48,4 @@ else
     docker compose -f docker-compose.stage.yml logs --tail=20
     exit 1
 fi
+
