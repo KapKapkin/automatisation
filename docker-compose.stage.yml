@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:16
+    volumes:
+      - stage_postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=university_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: unless-stopped
+
+  web:
+    image: ${DOCKER_USERNAME}/automatisation-web:${DEPLOY_TAG:-dev}
+    ports:
+      - "8080:8000"
+    depends_on:
+      - db
+    environment:
+      - DEBUG=0
+      - SECRET_KEY=${SECRET_KEY:-django-insecure-change-me-in-production}
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/university_db
+      - POSTGRES_DB=university_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    command: >
+      sh -c "python manage.py migrate --noinput &&
+             gunicorn --bind 0.0.0.0:8000 config.wsgi:application"
+    restart: unless-stopped
+
+volumes:
+  stage_postgres_data:
