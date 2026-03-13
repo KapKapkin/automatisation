@@ -1,0 +1,105 @@
+{% extends 'rooms/base.html' %}
+
+{% block title %}Главная - Учет аудиторного фонда{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1><i class="bi bi-building"></i> Учет аудиторного фонда университета</h1>
+            <p class="lead">Система управления помещениями и аудиториями</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card text-white bg-primary h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">{{ buildings_count }}</h4>
+                            <p class="card-text">Корпусов</p>
+                        </div>
+                        <div class="fs-1">
+                            <i class="bi bi-building"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'building_list' %}" class="text-white">
+                        Перейти к корпусам <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card text-white bg-success h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">{{ rooms_count }}</h4>
+                            <p class="card-text">Комнат</p>
+                        </div>
+                        <div class="fs-1">
+                            <i class="bi bi-door-open"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'room_list' %}" class="text-white">
+                        Перейти к комнатам <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card text-white bg-info h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">{{ departments_count }}</h4>
+                            <p class="card-text">Подразделений</p>
+                        </div>
+                        <div class="fs-1">
+                            <i class="bi bi-diagram-3"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'department_list' %}" class="text-white">
+                        Перейти к подразделениям <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <h3>Быстрые действия</h3>
+        </div>
+        <div class="col-md-3 mb-3">
+            <a href="{% url 'building_create' %}" class="btn btn-outline-primary w-100">
+                <i class="bi bi-plus-circle"></i> Добавить корпус
+            </a>
+        </div>
+        <div class="col-md-3 mb-3">
+            <a href="{% url 'room_create' %}" class="btn btn-outline-success w-100">
+                <i class="bi bi-plus-circle"></i> Добавить комнату
+            </a>
+        </div>
+        <div class="col-md-3 mb-3">
+            <a href="{% url 'department_create' %}" class="btn btn-outline-info w-100">
+                <i class="bi bi-plus-circle"></i> Добавить подразделение
+            </a>
+        </div>
+        <div class="col-md-3 mb-3">
+            <a href="{% url 'report_areas' %}" class="btn btn-outline-secondary w-100">
+                <i class="bi bi-file-earmark-bar-graph"></i> Отчёт по площадям
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

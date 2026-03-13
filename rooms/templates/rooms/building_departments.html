@@ -1,0 +1,104 @@
+{% extends 'rooms/base.html' %}
+
+{% block title %}Подразделения в {{ building.name }}{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'building_list' %}">Корпуса</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'building_detail' building.pk %}">{{ building.name }}</a></li>
+        <li class="breadcrumb-item active">Подразделения</li>
+    </ol>
+</nav>
+
+<h1><i class="bi bi-diagram-3"></i> Подразделения в корпусе «{{ building.name }}»</h1>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary">
+            <div class="card-body text-center">
+                <h5 class="card-title">Факультетов</h5>
+                <p class="card-text display-6">{{ faculties_count }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success">
+            <div class="card-body text-center">
+                <h5 class="card-title">Всего подразделений</h5>
+                <p class="card-text display-6">{{ departments|length }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if hierarchy %}
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">Структура подразделений</h5>
+    </div>
+    <div class="card-body">
+        {% for item in hierarchy %}
+        <div class="mb-3">
+            <h5>
+                <span class="badge bg-{% if item.department.department_type == 'faculty' %}primary{% elif item.department.department_type == 'department' %}success{% else %}info{% endif %}">
+                    {{ item.department.get_department_type_display }}
+                </span>
+                {{ item.department.name }}
+            </h5>
+            {% if item.children %}
+            <ul class="list-group ms-4">
+                {% for child in item.children %}
+                <li class="list-group-item">
+                    <span class="badge bg-{% if child.department.department_type == 'faculty' %}primary{% elif child.department.department_type == 'department' %}success{% else %}info{% endif %}">
+                        {{ child.department.get_department_type_display }}
+                    </span>
+                    {{ child.department.name }}
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if departments %}
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Список всех подразделений</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Название</th>
+                        <th>Тип</th>
+                        <th>Родительское</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dept in departments %}
+                    <tr>
+                        <td>{{ dept.name }}</td>
+                        <td>
+                            <span class="badge bg-{% if dept.department_type == 'faculty' %}primary{% elif dept.department_type == 'department' %}success{% else %}info{% endif %}">
+                                {{ dept.get_department_type_display }}
+                            </span>
+                        </td>
+                        <td>{{ dept.parent|default:"-" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info">
+    <i class="bi bi-info-circle"></i> В этом корпусе нет подразделений, связанных с комнатами.
+</div>
+{% endif %}
+{% endblock %}

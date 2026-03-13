@@ -1,0 +1,53 @@
+{% extends 'rooms/base.html' %}
+
+{% block title %}Подразделения{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-diagram-3"></i> Подразделения</h1>
+    <a href="{% url 'department_create' %}" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Добавить подразделение
+    </a>
+</div>
+
+{% if departments %}
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Название</th>
+                <th>Тип</th>
+                <th>Родительское подразделение</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for department in departments %}
+            <tr>
+                <td>{{ department.name }}</td>
+                <td>
+                    <span class="badge bg-{% if department.department_type == 'faculty' %}primary{% elif department.department_type == 'department' %}success{% else %}info{% endif %}">
+                        {{ department.get_department_type_display }}
+                    </span>
+                </td>
+                <td>{{ department.parent|default:"-" }}</td>
+                <td>
+                    <a href="{% url 'department_update' department.pk %}" class="btn btn-sm btn-warning" title="Редактировать">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a href="{% url 'department_delete' department.pk %}" class="btn btn-sm btn-danger" title="Удалить">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">
+    <i class="bi bi-info-circle"></i> Подразделений пока нет.
+    <a href="{% url 'department_create' %}">Добавить первое подразделение</a>
+</div>
+{% endif %}
+{% endblock %}

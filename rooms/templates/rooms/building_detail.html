@@ -1,0 +1,119 @@
+{% extends 'rooms/base.html' %}
+
+{% block title %}{{ building.name }}{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'building_list' %}">Корпуса</a></li>
+        <li class="breadcrumb-item active">{{ building.name }}</li>
+    </ol>
+</nav>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-building"></i> {{ building.name }}</h1>
+    <div>
+        <a href="{% url 'building_update' building.pk %}" class="btn btn-warning">
+            <i class="bi bi-pencil"></i> Редактировать
+        </a>
+        <a href="{% url 'building_departments' building.pk %}" class="btn btn-secondary">
+            <i class="bi bi-diagram-3"></i> Подразделения
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Информация о корпусе</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Наименование:</dt>
+                    <dd class="col-sm-8">{{ building.name }}</dd>
+                    
+                    <dt class="col-sm-4">Адрес:</dt>
+                    <dd class="col-sm-8">{{ building.address|default:"Не указан" }}</dd>
+                    
+                    <dt class="col-sm-4">Описание:</dt>
+                    <dd class="col-sm-8">{{ building.description|default:"Не указано" }}</dd>
+                    
+                    <dt class="col-sm-4">Кол-во комнат:</dt>
+                    <dd class="col-sm-8">{{ rooms.count }}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Расположения</h5>
+            </div>
+            <div class="card-body">
+                {% if locations %}
+                <ul class="list-group list-group-flush">
+                    {% for location in locations %}
+                    <li class="list-group-item d-flex justify-content-between">
+                        {{ location.name }}
+                        <span class="badge bg-secondary">{{ location.ceiling_height }} м</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted">Расположения не добавлены</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Комнаты в корпусе</h5>
+        <a href="{% url 'room_create' %}" class="btn btn-sm btn-primary">
+            <i class="bi bi-plus-circle"></i> Добавить комнату
+        </a>
+    </div>
+    <div class="card-body">
+        {% if rooms %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Номер</th>
+                        <th>Расположение</th>
+                        <th>Назначение</th>
+                        <th>Вид</th>
+                        <th>Площадь</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for room in rooms %}
+                    <tr>
+                        <td><a href="{% url 'room_detail' room.pk %}">{{ room.room_number }}</a></td>
+                        <td>{{ room.location.name }}</td>
+                        <td>{{ room.purpose|default:"-" }}</td>
+                        <td>{{ room.room_type|default:"-" }}</td>
+                        <td>{{ room.area|floatformat:2 }} м²</td>
+                        <td>
+                            <a href="{% url 'room_detail' room.pk %}" class="btn btn-sm btn-info">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{% url 'room_update' room.pk %}" class="btn btn-sm btn-warning">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted">В этом корпусе пока нет комнат</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

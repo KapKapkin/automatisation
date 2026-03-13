@@ -1,0 +1,87 @@
+{% extends 'rooms/base.html' %}
+
+{% block title %}Комната {{ room.room_number }}{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'room_list' %}">Комнаты</a></li>
+        <li class="breadcrumb-item active">{{ room.room_number }}</li>
+    </ol>
+</nav>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-door-open"></i> Комната {{ room.room_number }}</h1>
+    <div>
+        <a href="{% url 'room_update' room.pk %}" class="btn btn-warning">
+            <i class="bi bi-pencil"></i> Редактировать
+        </a>
+        <a href="{% url 'room_delete' room.pk %}" class="btn btn-danger">
+            <i class="bi bi-trash"></i> Удалить
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Основная информация</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-5">Номер комнаты:</dt>
+                    <dd class="col-sm-7">{{ room.room_number }}</dd>
+                    
+                    <dt class="col-sm-5">Корпус:</dt>
+                    <dd class="col-sm-7">
+                        <a href="{% url 'building_detail' room.building.pk %}">{{ room.building.name }}</a>
+                    </dd>
+                    
+                    <dt class="col-sm-5">Расположение:</dt>
+                    <dd class="col-sm-7">{{ room.location.name }}</dd>
+                    
+                    <dt class="col-sm-5">Назначение:</dt>
+                    <dd class="col-sm-7">{{ room.purpose|default:"Не указано" }}</dd>
+                    
+                    <dt class="col-sm-5">Вид помещения:</dt>
+                    <dd class="col-sm-7">{{ room.room_type|default:"Не указан" }}</dd>
+                    
+                    <dt class="col-sm-5">Подразделение:</dt>
+                    <dd class="col-sm-7">{{ room.department|default:"Не указано" }}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Размеры и площади</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-5">Ширина:</dt>
+                    <dd class="col-sm-7">{{ room.width }} м</dd>
+                    
+                    <dt class="col-sm-5">Длина:</dt>
+                    <dd class="col-sm-7">{{ room.length }} м</dd>
+                    
+                    <dt class="col-sm-5">Высота потолков:</dt>
+                    <dd class="col-sm-7">{{ room.location.ceiling_height }} м</dd>
+                    
+                    <dt class="col-sm-5">Площадь:</dt>
+                    <dd class="col-sm-7">
+                        <span class="badge bg-success fs-6">{{ room.area|floatformat:2 }} м²</span>
+                    </dd>
+                    
+                    <dt class="col-sm-5">Объём:</dt>
+                    <dd class="col-sm-7">
+                        <span class="badge bg-info fs-6">{{ room.volume|floatformat:2 }} м³</span>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

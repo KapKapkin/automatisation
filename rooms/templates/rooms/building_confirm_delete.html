@@ -1,0 +1,46 @@
+{% extends 'rooms/base.html' %}
+
+{% block title %}Удалить корпус{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'building_list' %}">Корпуса</a></li>
+        <li class="breadcrumb-item active">Удаление</li>
+    </ol>
+</nav>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Подтверждение удаления</h4>
+            </div>
+            <div class="card-body">
+                <p class="lead">Вы уверены, что хотите удалить корпус?</p>
+                <p><strong>{{ object.name }}</strong></p>
+                
+                {% if object.rooms.count > 0 %}
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-circle"></i> 
+                    Внимание! В этом корпусе {{ object.rooms.count }} комнат(ы). 
+                    Все они будут удалены вместе с корпусом.
+                </div>
+                {% endif %}
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Удалить
+                        </button>
+                        <a href="{% url 'building_list' %}" class="btn btn-secondary">
+                            <i class="bi bi-x-circle"></i> Отмена
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
