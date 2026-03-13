@@ -1,17 +1,11 @@
 #!/bin/bash
 set -e
 
-echo "=== Installing dependencies ==="
-pip install -r requirements.txt --quiet
-
 echo "=== Running bandit (security analysis) ==="
 echo "Checking for CRITICAL issues (severity=HIGH, confidence=HIGH)..."
 
-# Run bandit only for CRITICAL: severity HIGH + confidence HIGH
-# -r: recursive, -ll: only HIGH severity, -iii: only HIGH confidence
 bandit -r . -ll -iii --exclude ./.vevn,./.venv,./staticfiles -f json -o bandit_critical.json || true
 
-# Check if any CRITICAL issues found
 CRITICAL_COUNT=$(python -c "
 import json, sys
 try:
@@ -43,7 +37,6 @@ fi
 
 echo "=== No CRITICAL security issues found ==="
 
-# Show all findings (non-blocking)
 echo ""
 echo "=== bandit full report (non-blocking) ==="
 bandit -r . --exclude ./.vevn,./.venv,./staticfiles -f screen || true

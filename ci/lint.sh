@@ -16,7 +16,6 @@ else
     exit 1
 fi
 
-# Show warnings (non-blocking)
 echo ""
 echo "=== flake8 warnings (non-blocking) ==="
 flake8 . --count --exit-zero --max-line-length=120 --statistics || true
