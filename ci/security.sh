@@ -4,9 +4,9 @@ set -e
 echo "=== Running bandit (security analysis) ==="
 echo "Checking for CRITICAL issues (severity=HIGH, confidence=HIGH)..."
 
-bandit -r . -ll -iii --exclude ./.vevn,./.venv,./staticfiles -f json -o bandit_critical.json || true
+python3 -m bandit -r . -ll -iii --exclude ./.vevn,./.venv,./staticfiles -f json -o bandit_critical.json || true
 
-CRITICAL_COUNT=$(python -c "
+CRITICAL_COUNT=$(python3 -c "
 import json, sys
 try:
     with open('bandit_critical.json') as f:
@@ -25,7 +25,7 @@ except Exception:
 if [ "$CRITICAL_COUNT" -gt 0 ]; then
     echo "=== CRITICAL security issues detected! Build FAILED ==="
     # Print details
-    python -c "
+    python3 -c "
 import json
 with open('bandit_critical.json') as f:
     data = json.load(f)
@@ -39,6 +39,6 @@ echo "=== No CRITICAL security issues found ==="
 
 echo ""
 echo "=== bandit full report (non-blocking) ==="
-bandit -r . --exclude ./.vevn,./.venv,./staticfiles -f screen || true
+python3 -m bandit -r . --exclude ./.vevn,./.venv,./staticfiles -f screen || true
 
 echo "=== Security check passed ==="
