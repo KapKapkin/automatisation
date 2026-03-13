@@ -6,6 +6,10 @@ class Command(BaseCommand):
     help = 'Загружает тестовые данные для проверки работы системы'
 
     def handle(self, *args, **options):
+        if Building.objects.exists():
+            self.stdout.write(self.style.WARNING('Данные уже существуют, пропуск загрузки.'))
+            return
+
         self.stdout.write('Загрузка тестовых данных...')
 
         # Корпуса

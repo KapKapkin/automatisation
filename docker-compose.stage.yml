@@ -24,7 +24,9 @@ services:
       - POSTGRES_PASSWORD=postgres
     command: >
       sh -c "python manage.py migrate --noinput &&
-             gunicorn --bind 0.0.0.0:8000 config.wsgi:application"
+             python manage.py collectstatic --noinput &&
+             python manage.py load_test_data &&
+             gunicorn --bind 0.0.0.0:8000 --timeout 120 config.wsgi:application"
     restart: unless-stopped
 
 volumes:
