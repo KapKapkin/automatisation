@@ -26,7 +26,7 @@ export BACKUP_DIR="${BACKUP_DIR:-/backups}"
 
 # Запускаем бэкап через контейнер БД (если он запущен)
 docker compose -f docker-compose.prod.yml exec -T db \
-    bash -c "pg_dump -U $PROD_DB_USER $PROD_DB_NAME | gzip > /backups/db_backup_\$(date +%Y%m%d_%H%M%S).sql.gz" 2>/dev/null || {
+    bash -c 'pg_dump -U postgres university_db | gzip > /backups/db_backup_$(date +%Y%m%d_%H%M%S).sql.gz' 2>/dev/null || {
     echo "WARNING: Could not backup via docker exec, trying direct connection..."
     bash ci/db-backup.sh || echo "WARNING: Backup failed, proceeding with deployment"
 }
