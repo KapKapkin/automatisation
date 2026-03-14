@@ -10,7 +10,7 @@ class LocationInline(admin.TabularInline):
 class RoomInline(admin.TabularInline):
     model = Room
     extra = 0
-    fields = ['room_number', 'width', 'length', 'purpose', 'room_type', 'department']
+    fields = ['room_number', 'width', 'length', 'capacity', 'purpose', 'room_type', 'department']
 
 
 @admin.register(Building)
@@ -53,7 +53,7 @@ class RoomTypeAdmin(admin.ModelAdmin):
 
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
-    list_display = ['room_number', 'building', 'location', 'purpose', 'room_type', 'department', 'get_area', 'get_volume']
+    list_display = ['room_number', 'building', 'location', 'capacity', 'purpose', 'room_type', 'department', 'get_area', 'get_volume']
     list_filter = ['building', 'purpose', 'room_type', 'department']
     search_fields = ['room_number', 'building__name']
     list_select_related = ['building', 'location', 'purpose', 'room_type', 'department']

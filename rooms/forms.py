@@ -45,13 +45,14 @@ class DepartmentForm(forms.ModelForm):
 class RoomForm(forms.ModelForm):
     class Meta:
         model = Room
-        fields = ['building', 'location', 'room_number', 'width', 'length', 'purpose', 'room_type', 'department']
+        fields = ['building', 'location', 'room_number', 'width', 'length', 'capacity', 'purpose', 'room_type', 'department']
         widgets = {
             'building': forms.Select(attrs={'class': 'form-control'}),
             'location': forms.Select(attrs={'class': 'form-control'}),
             'room_number': forms.TextInput(attrs={'class': 'form-control'}),
             'width': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
             'length': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
+            'capacity': forms.NumberInput(attrs={'class': 'form-control', 'min': '0'}),
             'purpose': forms.Select(attrs={'class': 'form-control'}),
             'room_type': forms.Select(attrs={'class': 'form-control'}),
             'department': forms.Select(attrs={'class': 'form-control'}),

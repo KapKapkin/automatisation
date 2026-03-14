@@ -151,6 +151,10 @@ class Room(models.Model):
         related_name='rooms',
         verbose_name='Подразделение'
     )
+    capacity = models.PositiveIntegerField(
+        default=0,
+        verbose_name='Вместимость (чел.)'
+    )
 
     class Meta:
         verbose_name = 'Комната'

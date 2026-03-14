@@ -118,6 +118,7 @@ class RoomFormTest(TestCase):
             'room_number': '101',
             'width': '10.00',
             'length': '5.00',
+            'capacity': '30',
             'purpose': '',
             'room_type': '',
             'department': '',

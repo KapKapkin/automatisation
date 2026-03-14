@@ -28,6 +28,12 @@ docker compose -f docker-compose.stage.yml up -d
 echo "=== Waiting for application to start ==="
 sleep 10
 
+# Применяем миграции БД на STAGE
+echo "=== Running DB migrations on STAGE ==="
+docker compose -f docker-compose.stage.yml exec -T web python manage.py migrate --noinput || {
+    echo "WARNING: Could not run migrations via exec, they should run on startup"
+}
+
 if docker compose -f docker-compose.stage.yml ps | grep -q "Up"; then
     echo "=== Deploy successful! Application is running ==="
     docker compose -f docker-compose.stage.yml ps
